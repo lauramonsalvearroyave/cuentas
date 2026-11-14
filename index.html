@@ -3,121 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Cuentas de Sebastián</title>
-<meta name="theme-color" content="#1f5f8b">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231f5f8b'/><text x='16' y='23' font-size='19' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'>$</text></svg>">
+<title>Bolsillo</title>
+<meta name="theme-color" content="#0f3d3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bolsillo">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%230f3d3a'/><g transform='translate(6 6) scale(.81)'><path d='M14 20 42 10a4 4 0 0 1 5 3.8V20' fill='none' stroke='%23ffb547' stroke-width='4.5' stroke-linejoin='round'/><rect x='8' y='19' width='48' height='35' rx='9' fill='%23ffb547'/><rect x='36' y='29' width='22' height='15' rx='6' fill='%230f3d3a'/><circle cx='44' cy='36.5' r='3' fill='%23ffb547'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <h1>Cuentas de Sebastián</h1>
-      <p class="sub">Cada ingreso suma y cada gasto resta solo. El efectivo se lleva aparte.</p>
-    </div>
-    <div class="me" id="me" hidden>
-      <span id="me-email"></span>
-      <button type="button" class="btn ghost small" id="logout">Salir</button>
-    </div>
-  </div>
 
-  <!-- Pantalla de entrada -->
-  <section class="login" id="login-view">
-    <h2>Entrar</h2>
-    <p>Solo Laura y Sebastián tienen acceso.</p>
-    <button type="button" class="btn" id="login">Entrar con Google</button>
-    <div class="or">o con correo y contraseña</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 64 64"><path d="M14 20 42 10a4 4 0 0 1 5 3.8V20" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/><rect x="8" y="19" width="48" height="35" rx="9" fill="currentColor"/><rect x="36" y="29" width="22" height="15" rx="6" fill="var(--logo-hole,#0f3d3a)"/><circle cx="44" cy="36.5" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M17 7 7 17M7 9v8h8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 9.5v5M18 9.5v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-google" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></symbol>
+</svg>
+
+<!-- ===================== LOGIN ===================== -->
+<div class="login-screen" id="login-view">
+  <div class="login-card">
+    <div class="brand-mark"><svg><use href="#i-logo"/></svg></div>
+    <h1>Bolsillo</h1>
+    <p class="tagline">Lo que entra, lo que sale y lo que queda, sin hacer cuentas a mano.</p>
+
+    <button type="button" class="btn google" id="login">
+      <svg><use href="#i-google"/></svg> Entrar con Google
+    </button>
+
+    <div class="or"><span>o con tu correo</span></div>
+
     <form id="pw-form" class="pw" autocomplete="on">
-      <div class="field"><label for="pw-email">Correo</label><input id="pw-email" type="email" autocomplete="username" required></div>
-      <div class="field"><label for="pw-pass">Contraseña</label><input id="pw-pass" type="password" autocomplete="current-password" required></div>
-      <div class="row">
-        <button type="submit" class="btn ghost" id="pw-submit">Entrar</button>
-        <button type="button" class="link" id="pw-reset">Olvidé mi contraseña</button>
-      </div>
+      <label class="field"><span>Correo</span><input id="pw-email" type="email" autocomplete="username" inputmode="email" required></label>
+      <label class="field"><span>Contraseña</span><input id="pw-pass" type="password" autocomplete="current-password" required></label>
+      <button type="submit" class="btn primary" id="pw-submit">Entrar</button>
+      <button type="button" class="link" id="pw-reset">Olvidé mi contraseña</button>
     </form>
     <p class="msg" id="login-msg" role="status"></p>
-  </section>
+  </div>
+</div>
 
-  <!-- App -->
-  <div id="app-view" class="app" hidden>
-    <section class="summary" aria-label="Resumen en el banco">
-      <div class="tile in">
-        <span class="label">Ingresos</span>
-        <span class="num" id="t-in">$0</span>
-        <span class="hint">Lo que ha entrado (sin efectivo)</span>
-      </div>
-      <div class="tile out">
-        <span class="label"><span class="op">−</span> Gastos</span>
-        <span class="num" id="t-out">$0</span>
-        <span class="hint">Lo que se ha pagado (sin efectivo)</span>
-      </div>
-      <div class="tile total">
-        <span class="label"><span class="op">=</span> Total disponible</span>
-        <span class="num" id="t-total">$0</span>
-        <span class="hint">Lo que queda en el banco</span>
-      </div>
-    </section>
-
-    <section class="cash" aria-label="Efectivo">
-      <div class="main">
-        <span class="label">Efectivo disponible</span>
-        <span class="num" id="c-total">$0</span>
-      </div>
-      <div class="detail">
-        <span>Recibido: <b class="num" id="c-in">$0</b></span>
-        <span>Gastado: <b class="num" id="c-out">$0</b></span>
-      </div>
-      <span class="note">El efectivo no se suma al total del banco.</span>
-    </section>
-
-    <form id="form" autocomplete="off">
-      <div class="row">
-        <h2 id="form-title">Agregar movimiento</h2>
-        <span class="status" id="status">Conectando…</span>
-      </div>
-      <div class="kind" role="group" aria-label="Tipo de movimiento">
-        <button type="button" class="g" id="k-gasto" aria-pressed="true">− Gasto</button>
-        <button type="button" class="i" id="k-ingreso" aria-pressed="false">+ Ingreso</button>
-      </div>
-      <div class="fields">
-        <div class="field"><label for="f-monto">Valor</label><input id="f-monto" inputmode="numeric" placeholder="$0" required></div>
-        <div class="field"><label for="f-fecha">Fecha</label><input id="f-fecha" type="date"></div>
-        <div class="field"><label for="f-desc">Descripción</label><input id="f-desc" placeholder="Ej: seguridad social, tiquetes…" maxlength="140"></div>
-        <div class="field"><label for="f-quien">Lo registra</label>
-          <select id="f-quien"><option>Laura</option><option>Sebastián</option></select></div>
-      </div>
-      <div class="row">
-        <label class="check"><input type="checkbox" id="f-efectivo"> Fue en efectivo</label>
-        <div class="actions">
-          <button type="button" class="btn ghost" id="cancel" hidden>Cancelar</button>
-          <button type="submit" class="btn" id="submit">Agregar gasto</button>
+<!-- ===================== APP ===================== -->
+<div id="app-view" hidden>
+  <header class="hero">
+    <div class="hero-in">
+      <div class="bar">
+        <div class="brand"><svg><use href="#i-logo"/></svg>Bolsillo</div>
+        <div class="who-menu">
+          <button type="button" class="avatar" id="avatar" aria-haspopup="true" aria-expanded="false" aria-label="Mi cuenta">?</button>
+          <div class="menu" id="menu" hidden>
+            <span id="me-email"></span>
+            <button type="button" class="btn ghost" id="logout">Cerrar sesión</button>
+          </div>
         </div>
       </div>
-      <div class="msg" id="msg" role="status"></div>
-    </form>
+
+      <p class="eyebrow">Disponible en el banco</p>
+      <p class="big num" id="t-total">$0</p>
+
+      <div class="flows">
+        <div class="flow in">
+          <span class="dot"><svg><use href="#i-in"/></svg></span>
+          <span><small>Entró</small><b class="num" id="t-in">$0</b></span>
+        </div>
+        <div class="flow out">
+          <span class="dot"><svg><use href="#i-out"/></svg></span>
+          <span><small>Salió</small><b class="num" id="t-out">$0</b></span>
+        </div>
+      </div>
+
+      <div class="meter" aria-hidden="true"><span id="meter-fill"></span></div>
+      <p class="meter-label" id="meter-label">&nbsp;</p>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="cash-card" aria-label="Efectivo">
+      <div class="cash-icon"><svg><use href="#i-cash"/></svg></div>
+      <div class="cash-body">
+        <p class="eyebrow">Efectivo en mano</p>
+        <p class="cash-total num" id="c-total">$0</p>
+        <p class="cash-detail">Recibido <b class="num" id="c-in">$0</b> · Gastado <b class="num" id="c-out">$0</b></p>
+      </div>
+      <span class="cash-tag">Aparte del banco</span>
+    </section>
 
     <section class="import" id="import-box" hidden>
-      <div>
-        <h2>Todavía no hay movimientos</h2>
-        <p>Agrega el primero con el formulario, o carga de una vez el archivo <b>datos-iniciales.json</b> que está en la carpeta del proyecto en tu computador.</p>
-      </div>
+      <h2>Todavía no hay movimientos</h2>
+      <p>Agrega el primero con el botón <b>+</b>, o carga de una vez el archivo <b>datos-iniciales.json</b> desde tu computador.</p>
       <label class="btn ghost" for="import-file">Cargar archivo de datos</label>
       <input type="file" id="import-file" accept="application/json,.json" hidden>
     </section>
 
-    <section class="lists">
-      <div class="list out">
-        <header><h2>Gastos</h2><span class="num" id="l-out">$0</span></header>
-        <ul id="list-out"></ul>
+    <div class="tabs" role="tablist" aria-label="Ver movimientos">
+      <button type="button" role="tab" class="tab" data-tab="gasto" aria-selected="true">Gastos <span class="count" id="n-gasto">0</span></button>
+      <button type="button" role="tab" class="tab" data-tab="ingreso" aria-selected="false">Ingresos <span class="count" id="n-ingreso">0</span></button>
+      <button type="button" role="tab" class="tab" data-tab="todo" aria-selected="false">Todo</button>
+    </div>
+
+    <div id="list" class="list" aria-live="polite"><p class="empty">Cargando movimientos…</p></div>
+    <p class="status" id="status">Conectando…</p>
+  </main>
+
+  <button type="button" class="fab" id="fab"><svg><use href="#i-plus"/></svg><span>Agregar</span></button>
+
+  <!-- Hoja para agregar / editar -->
+  <div class="sheet-wrap" id="sheet" hidden>
+    <div class="backdrop" id="backdrop"></div>
+    <form class="sheet" id="form" role="dialog" aria-modal="true" aria-labelledby="form-title" autocomplete="off">
+      <div class="grab" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <h2 id="form-title">Nuevo movimiento</h2>
+        <button type="button" class="icon-btn" id="close" aria-label="Cerrar"><svg><use href="#i-close"/></svg></button>
       </div>
-      <div class="list in">
-        <header><h2>Ingresos</h2><span class="num" id="l-in">$0</span></header>
-        <ul id="list-in"></ul>
+
+      <div class="seg" role="group" aria-label="Tipo de movimiento">
+        <button type="button" class="g" id="k-gasto" aria-pressed="true"><svg><use href="#i-out"/></svg>Gasto</button>
+        <button type="button" class="i" id="k-ingreso" aria-pressed="false"><svg><use href="#i-in"/></svg>Ingreso</button>
       </div>
-    </section>
+
+      <label class="amount" for="f-monto">
+        <span class="sr">Valor</span>
+        <input id="f-monto" inputmode="numeric" placeholder="$0" required>
+      </label>
+
+      <label class="field"><span>Descripción</span><input id="f-desc" placeholder="Ej: seguridad social, tiquetes…" maxlength="140"></label>
+      <div class="two">
+        <label class="field"><span>Fecha</span><input id="f-fecha" type="date"></label>
+        <label class="field"><span>Lo registra</span>
+          <select id="f-quien"><option>Laura</option><option>Sebastián</option></select></label>
+      </div>
+
+      <label class="switch">
+        <input type="checkbox" id="f-efectivo">
+        <span class="track" aria-hidden="true"></span>
+        <span class="switch-text"><b>Fue en efectivo</b><small>Va a la tarjeta de efectivo, no al banco</small></span>
+      </label>
+
+      <p class="msg" id="msg" role="status"></p>
+      <button type="submit" class="btn primary big-btn" id="submit">Agregar gasto</button>
+
+      <div class="danger-zone" id="danger" hidden>
+        <button type="button" class="link danger" id="del">Borrar este movimiento</button>
+        <div class="confirm" id="confirm" hidden>
+          <span>¿Seguro que quieres borrarlo?</span>
+          <button type="button" class="btn danger-btn" id="del-yes">Sí, borrar</button>
+          <button type="button" class="btn ghost" id="del-no">No</button>
+        </div>
+      </div>
+    </form>
   </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
 </div>
 
 <script type="module" src="app.js"></script>
