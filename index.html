@@ -21,6 +21,7 @@
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 9.5v5M18 9.5v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
   <symbol id="i-google" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></symbol>
 </svg>
@@ -58,6 +59,7 @@
           <button type="button" class="avatar" id="avatar" aria-haspopup="true" aria-expanded="false" aria-label="Mi cuenta">?</button>
           <div class="menu" id="menu" hidden>
             <span id="me-email"></span>
+            <label class="btn ghost" for="import-file">Importar archivo de datos</label>
             <button type="button" class="btn ghost" id="logout">Cerrar sesión</button>
           </div>
         </div>
@@ -97,7 +99,33 @@
       <h2>Todavía no hay movimientos</h2>
       <p>Agrega el primero con el botón <b>+</b>, o carga de una vez el archivo <b>datos-iniciales.json</b> desde tu computador.</p>
       <label class="btn ghost" for="import-file">Cargar archivo de datos</label>
-      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </section>
+    <input type="file" id="import-file" accept="application/json,.json" hidden>
+
+    <!-- Filtros -->
+    <section class="filters" aria-label="Filtros">
+      <div class="chips" id="months" role="group" aria-label="Filtrar por mes"></div>
+      <label class="search">
+        <svg><use href="#i-search"/></svg>
+        <span class="sr">Buscar</span>
+        <input id="q" type="search" placeholder="Buscar: Marisol, tiquetes, ARL…" autocomplete="off">
+      </label>
+    </section>
+
+    <!-- Resumen del periodo + categorías -->
+    <section class="period" aria-labelledby="p-title">
+      <h2 id="p-title">Todos los meses</h2>
+      <div class="p-stats">
+        <div><small>Entró</small><b class="num pos" id="p-in">$0</b></div>
+        <div><small>Salió</small><b class="num neg" id="p-out">$0</b></div>
+        <div><small>Diferencia</small><b class="num" id="p-net">$0</b></div>
+      </div>
+      <div class="cats-head">
+        <h3>¿En qué se fue la plata?</h3>
+        <span class="num" id="cats-total"></span>
+      </div>
+      <ul class="cats" id="cats"></ul>
+      <p class="hint">Entró y Salió cuentan solo el banco. Las categorías incluyen también el efectivo. Toca una categoría para ver solo esos gastos.</p>
     </section>
 
     <div class="tabs" role="tablist" aria-label="Ver movimientos">
@@ -105,6 +133,8 @@
       <button type="button" role="tab" class="tab" data-tab="ingreso" aria-selected="false">Ingresos <span class="count" id="n-ingreso">0</span></button>
       <button type="button" role="tab" class="tab" data-tab="todo" aria-selected="false">Todo</button>
     </div>
+
+    <div class="active" id="active" hidden></div>
 
     <div id="list" class="list" aria-live="polite"><p class="empty">Cargando movimientos…</p></div>
     <p class="status" id="status">Conectando…</p>
@@ -133,6 +163,7 @@
       </label>
 
       <label class="field"><span>Descripción</span><input id="f-desc" placeholder="Ej: seguridad social, tiquetes…" maxlength="140"></label>
+      <label class="field" id="cat-field"><span>Categoría <small id="cat-auto"></small></span><select id="f-cat"></select></label>
       <div class="two">
         <label class="field"><span>Fecha</span><input id="f-fecha" type="date"></label>
         <label class="field"><span>Lo registra</span>
