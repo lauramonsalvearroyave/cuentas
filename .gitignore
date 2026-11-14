@@ -1,0 +1,10 @@
+# Datos personales: nunca subirlos a GitHub
+datos-iniciales.json
+*.json.bak
+# Las reglas llevan los correos de Laura y Sebastián: se quedan solo en este computador
+firestore.rules
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log

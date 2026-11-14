@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cuentas de Sebastián</title>
+<meta name="theme-color" content="#1f5f8b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231f5f8b'/><text x='16' y='23' font-size='19' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'>$</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Cuentas de Sebastián</h1>
+      <p class="sub">Cada ingreso suma y cada gasto resta solo. El efectivo se lleva aparte.</p>
+    </div>
+    <div class="me" id="me" hidden>
+      <span id="me-email"></span>
+      <button type="button" class="btn ghost small" id="logout">Salir</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de entrada -->
+  <section class="login" id="login-view">
+    <h2>Entrar</h2>
+    <p>Solo Laura y Sebastián tienen acceso.</p>
+    <button type="button" class="btn" id="login">Entrar con Google</button>
+    <div class="or">o con correo y contraseña</div>
+    <form id="pw-form" class="pw" autocomplete="on">
+      <div class="field"><label for="pw-email">Correo</label><input id="pw-email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="pw-pass">Contraseña</label><input id="pw-pass" type="password" autocomplete="current-password" required></div>
+      <div class="row">
+        <button type="submit" class="btn ghost" id="pw-submit">Entrar</button>
+        <button type="button" class="link" id="pw-reset">Olvidé mi contraseña</button>
+      </div>
+    </form>
+    <p class="msg" id="login-msg" role="status"></p>
+  </section>
+
+  <!-- App -->
+  <div id="app-view" class="app" hidden>
+    <section class="summary" aria-label="Resumen en el banco">
+      <div class="tile in">
+        <span class="label">Ingresos</span>
+        <span class="num" id="t-in">$0</span>
+        <span class="hint">Lo que ha entrado (sin efectivo)</span>
+      </div>
+      <div class="tile out">
+        <span class="label"><span class="op">−</span> Gastos</span>
+        <span class="num" id="t-out">$0</span>
+        <span class="hint">Lo que se ha pagado (sin efectivo)</span>
+      </div>
+      <div class="tile total">
+        <span class="label"><span class="op">=</span> Total disponible</span>
+        <span class="num" id="t-total">$0</span>
+        <span class="hint">Lo que queda en el banco</span>
+      </div>
+    </section>
+
+    <section class="cash" aria-label="Efectivo">
+      <div class="main">
+        <span class="label">Efectivo disponible</span>
+        <span class="num" id="c-total">$0</span>
+      </div>
+      <div class="detail">
+        <span>Recibido: <b class="num" id="c-in">$0</b></span>
+        <span>Gastado: <b class="num" id="c-out">$0</b></span>
+      </div>
+      <span class="note">El efectivo no se suma al total del banco.</span>
+    </section>
+
+    <form id="form" autocomplete="off">
+      <div class="row">
+        <h2 id="form-title">Agregar movimiento</h2>
+        <span class="status" id="status">Conectando…</span>
+      </div>
+      <div class="kind" role="group" aria-label="Tipo de movimiento">
+        <button type="button" class="g" id="k-gasto" aria-pressed="true">− Gasto</button>
+        <button type="button" class="i" id="k-ingreso" aria-pressed="false">+ Ingreso</button>
+      </div>
+      <div class="fields">
+        <div class="field"><label for="f-monto">Valor</label><input id="f-monto" inputmode="numeric" placeholder="$0" required></div>
+        <div class="field"><label for="f-fecha">Fecha</label><input id="f-fecha" type="date"></div>
+        <div class="field"><label for="f-desc">Descripción</label><input id="f-desc" placeholder="Ej: seguridad social, tiquetes…" maxlength="140"></div>
+        <div class="field"><label for="f-quien">Lo registra</label>
+          <select id="f-quien"><option>Laura</option><option>Sebastián</option></select></div>
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="f-efectivo"> Fue en efectivo</label>
+        <div class="actions">
+          <button type="button" class="btn ghost" id="cancel" hidden>Cancelar</button>
+          <button type="submit" class="btn" id="submit">Agregar gasto</button>
+        </div>
+      </div>
+      <div class="msg" id="msg" role="status"></div>
+    </form>
+
+    <section class="import" id="import-box" hidden>
+      <div>
+        <h2>Todavía no hay movimientos</h2>
+        <p>Agrega el primero con el formulario, o carga de una vez el archivo <b>datos-iniciales.json</b> que está en la carpeta del proyecto en tu computador.</p>
+      </div>
+      <label class="btn ghost" for="import-file">Cargar archivo de datos</label>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </section>
+
+    <section class="lists">
+      <div class="list out">
+        <header><h2>Gastos</h2><span class="num" id="l-out">$0</span></header>
+        <ul id="list-out"></ul>
+      </div>
+      <div class="list in">
+        <header><h2>Ingresos</h2><span class="num" id="l-in">$0</span></header>
+        <ul id="list-in"></ul>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
