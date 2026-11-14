@@ -8,3 +8,8 @@ firestore.rules
 .firebase/
 firebase-debug.log
 firestore-debug.log
+
+# Librerías de npm (la app carga Firebase desde internet, no las necesita)
+node_modules/
+package.json
+package-lock.json
